@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RoyalRoad: AN Spam Filter
 // @namespace    eldani-rr-an-spam-filter
-// @version      1.1
+// @version      1.2
 // @description  Collapses all author's notes that contain spam
 // @author       ElDani
 // @match        https://www.royalroad.com/fiction/*
@@ -16,7 +16,13 @@
 
     function getRRStoryID(url) {
         let urlp = new URL(url);
-        if(urlp.pathname.startsWith("/amazon/")) return "amazon";
+
+        if(
+            urlp.pathname.startsWith("/amazon/") ||
+            urlp.hostname == "a.co"
+        ) {
+            return "amazon";
+        }
 
         if(typeof url !== "string" || url.length === 0) {
             return console.log("[RRantispam]", "getStoryID(): Please provide an url in string form!");
