@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RoyalRoad: AN Spam Filter
 // @namespace    eldani-rr-an-spam-filter
-// @version      1.2
+// @version      1.3
 // @description  Collapses all author's notes that contain spam
 // @author       ElDani
 // @match        https://www.royalroad.com/fiction/*
@@ -33,18 +33,18 @@
         }
     }
     function hideAN(el) {
-        let portlet = el.closest(".author-note-portlet");
-        let ANtitle = portlet?.querySelector(".portlet-title");
-        let ANbody = portlet?.querySelector(".portlet-body");
+        let card = el.closest(".author-note-card");
+        let ANtitle = card?.firstElementChild;
+        let ANbody = card?.querySelector(".author-note");
 
-        if(!portlet || !ANtitle || !ANbody) {
+        if(!card || !ANtitle || !ANbody) {
             return console.log("[RRantispam]", "Couldn't find matching parent of", el);
         }
 
         ANbody.style.display = "none";
 
-        if(!portlet.classList.contains("RRantispam")) {
-            portlet.classList.add("RRantispam");
+        if(!card.classList.contains("RRantispam")) {
+            card.classList.add("RRantispam");
             ANtitle.style.color = "#eeabab";
             ANtitle.style.cursor = "pointer";
             ANtitle.style.userSelect = "none";
@@ -58,7 +58,7 @@
 
     const ownID = getRRStoryID(location.href);
 
-    Array.from(document.querySelectorAll(".author-note-portlet a")).forEach((url) => {
+    Array.from(document.querySelectorAll(".author-note a")).forEach((url) => {
         let curID = getRRStoryID(url.href);
         if(curID && curID !== ownID || curID === "amazon") {
             hideAN(url);
